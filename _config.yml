@@ -28,7 +28,7 @@ twitter_username: STInverSpinel
 github_username:  STInverSpinel
 
 # Build settings
-theme: jekyll-theme-minimal
+theme: minima
 plugins:
   - jekyll-feed
 
