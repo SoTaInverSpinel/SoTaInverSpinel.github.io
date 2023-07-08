@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--https://www.toptensoftware.com/docbrowser/-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="../../assets/prism.css" rel="stylesheet">
+    
+    <title>二部グラフ</title>
+</head>
+<body>
+    
+    <p>
+        <a href="https://atcoder.jp/contests/abc282/tasks/abc282_d">ABC282D</a>
+        
+    </p>
+    <pre class="line-numbers"><code class="language-python">
+import sys
+sys.setrecursionlimit(10**7)
+
+N,M=map(int,input().split())
+graph=[[] for _ in range(N)]
+
+for i in range(M):
+    a, b = map(int, input().split())
+    a -= 1
+    b -= 1
+    graph[a].append(b)
+    graph[b].append(a)
+
+color=[0]*N
+
+#dfs(verticle, parent, color)
+def dfs(v,p,c):
+    res=[0,0]
+    color[v]=c
+
+    if c==1:
+        res[0]+=1
+    else: #c==-1
+        res[1]+=1
+
+    for u in graph[v]:
+        if u==p:
+            continue
+
+        if color[u]==-c:
+            continue
+
+        if color[u]==c:
+            return [-1,-1]
+        
+        tmp=dfs(u,v,-c)
+
+        if tmp[0]==-1:
+            return [-1,-1]
+        
+        res[0]+=tmp[0]
+        res[1]+=tmp[1]
+
+    return res
+
+def solve():
+    ans=N*(N-1)//2-M
+
+    for i in range(N):
+        if not color[i]:
+            res=dfs(i,-1,1)
+
+            if res[0]==-1:
+                print(0)
+                return
+            
+            ans-=res[0]*(res[0]-1)//2
+            ans-=res[1]*(res[1]-1)//2
+    
+    print(ans)
+    
+solve()
+        </code>
+    </pre>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="../../assets/prism.js"></script>
+</body>
+</html>
